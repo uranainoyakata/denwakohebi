@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>【恋蛇】運命の電話鑑定</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        /* --- 基本設定（パステルカラー版） --- */
+        :root {
+            --bg-gradient: linear-gradient(135deg, #e0f7fa 0%, #b2ebf2 100%); /* 水色グラデーション */
+            --text-color: #37474F; /* 濃いグレー */
+            --accent-color: #00838F; /* アクセントの青緑 */
+            --accent-hover: #0097A7;
+            --card-bg: rgba(255, 255, 255, 0.6); /* 半透明の白 */
+            --white-color: #ffffff;
+        }
+        body {
+            background: var(--bg-gradient);
+            color: var(--text-color);
+            font-family: 'Noto Serif JP', serif;
+            margin: 0;
+            padding: 0;
+            line-height: 1.8;
+            font-size: 16px;
+            overflow-x: hidden; /* 横スクロール防止 */
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+        section {
+            padding: 60px 0;
+            border-bottom: 1px solid rgba(0, 131, 143, 0.1);
+        }
+        h1, h2, h3 {
+            font-weight: 700;
+            color: var(--accent-color);
+            text-align: center;
+            line-height: 1.4;
+        }
+        h2 {
+            font-size: 2.2em;
+            margin-bottom: 40px;
+        }
+        h3 {
+            font-size: 1.5em;
+            margin-bottom: 20px;
+        }
+        p {
+            margin-bottom: 1em;
+        }
+        a {
+            color: var(--accent-color);
+        }
+
+        /* --- ファーストビュー --- */
+        .hero {
+            background-image: linear-gradient(rgba(224, 247, 250, 0.7), rgba(178, 235, 242, 0.9)), url('https://i.imgur.com/2pjaRY0.jpeg'); /* 背景画像に明るいフィルター */
+            background-size: cover;
+            background-position: center;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 20px;
+        }
+        .hero h1 {
+            font-size: 2.5em;
+            margin: 0;
+            color: var(--accent-color);
+            text-shadow: 1px 1px 5px rgba(255,255,255,0.5);
+        }
+        .hero p {
+            font-size: 1.2em;
+            margin: 20px 0 40px 0;
+            font-weight: 700;
+            color: var(--text-color);
+        }
+        .badges {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+            margin: 20px 0;
+        }
+        .badge {
+            background: var(--card-bg);
+            border: 1px solid var(--accent-color);
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            color: var(--accent-color);
+            font-weight: 700;
+        }
+        .cta-button {
+            background: linear-gradient(45deg, var(--accent-color), var(--accent-hover));
+            color: var(--white-color);
+            padding: 15px 40px;
+            text-decoration: none;
+            font-weight: 700;
+            border-radius: 50px;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            font-size: 1.1em;
+            display: inline-block;
+        }
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+        }
+        .cta-subtext {
+            font-size: 0.8em;
+            margin-top: 5px;
+            color: var(--text-color);
+        }
+
+        /* --- 共感・問題提起 --- */
+        .problem ul {
+            list-style: none;
+            padding: 0;
+        }
+        .problem li {
+            background: var(--card-bg);
+            padding: 15px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            border-left: 3px solid var(--accent-color);
+        }
+
+        /* --- 料金案内 --- */
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin-top: 40px;
+        }
+        .plan {
+            background: var(--card-bg);
+            border: 1px solid rgba(0, 131, 143, 0.2);
+            padding: 30px;
+            border-radius: 10px;
+            text-align: center;
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+        .plan:hover {
+            transform: translateY(-5px);
+            border-color: var(--accent-color);
+        }
+        .plan-content {
+            flex-grow: 1; /* ボタンが常に一番下に来るように */
+        }
+        .plan.popular {
+            border-color: var(--accent-color);
+            position: relative;
+            overflow: hidden;
+        }
+        .plan.popular::before {
+            content: '一番人気';
+            position: absolute;
+            top: 15px;
+            right: -25px;
+            background: var(--accent-color);
+            color: var(--white-color);
+            padding: 5px 30px;
+            transform: rotate(45deg);
+            font-size: 0.8em;
+            font-weight: 700;
+        }
+        .plan-name {
+            font-weight: 700;
+            font-size: 1.2em;
+        }
+        .plan-price {
+            font-size: 2.5em;
+            color: var(--accent-color);
+            margin: 10px 0;
+            font-weight: 700;
+        }
+        .plan-description {
+            font-size: 0.9em;
+            margin-top: 10px;
+        }
+        .plan-note {
+            font-size: 0.8em;
+            color: var(--accent-color);
+            font-weight: 700;
+            margin-top: 15px;
+        }
+        .plan .cta-button { /* 料金プラン内のボタン */
+            margin-top: 25px; 
+        }
+
+        /* --- 購入後の流れ --- */
+        .flow-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+            margin-top: 40px;
+        }
+        .flow-step {
+            text-align: center;
+        }
+        .step-number {
+            font-size: 1.2em;
+            font-weight: 700;
+            color: var(--accent-color);
+            margin-bottom: 10px;
+        }
+        .line-button {
+            display: inline-block;
+            background-color: #06C755; /* LINEの緑 */
+            color: white;
+            padding: 15px 40px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 700;
+            transition: opacity 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        .line-button:hover {
+            opacity: 0.9;
+        }
+        
+        /* --- フッター --- */
+        footer {
+            text-align: center;
+            padding: 40px 20px;
+            font-size: 0.9em;
+            color: #546E7A;
+            border-top: 1px solid rgba(0, 131, 143, 0.1);
+        }
+        footer a {
+            color: #546E7A;
+            text-decoration: none;
+            margin: 0 10px;
+        }
+        footer a:hover {
+            color: var(--accent-color);
+        }
+
+        /* ========================================
+        --- スマートフォン用のスタイル調整 ---
+        ========================================
+        */
+        @media (max-width: 768px) {
+            body {
+                font-size: 15px; /* スマホでは少し文字を小さくして情報量を確保 */
+            }
+            .container {
+                padding: 30px 15px; /* スマホでは左右の余白を少し詰める */
+            }
+            section {
+                padding: 40px 0; /* セクション間の余白も詰める */
+            }
+
+            /* --- ファーストビューのスマホ調整 --- */
+            .hero {
+                height: auto; /* コンテンツの高さに合わせる */
+                min-height: 90vh;
+            }
+            .hero h1 {
+                font-size: 1.8em; /* スマホでは見出しを少し小さく */
+            }
+            .hero p {
+                font-size: 1em;
+            }
+            .cta-button {
+                padding: 12px 30px;
+                font-size: 1em;
+            }
+
+            /* --- 各セクションの見出し調整 --- */
+            h2 {
+                font-size: 1.7em;
+                margin-bottom: 30px;
+            }
+            h3 {
+                font-size: 1.3em;
+            }
+
+            /* --- 料金プランのスマホ調整 --- */
+            .pricing-grid {
+                grid-template-columns: 1fr; /* PCでは3列、スマホでは1列にする */
+            }
+            .plan {
+                padding: 25px;
+            }
+            .plan-price {
+                font-size: 2.2em;
+            }
+
+            /* --- 購入フローのスマホ調整 --- */
+            .flow-grid {
+                grid-template-columns: 1fr; /* スマホでは1列にする */
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 1. ファーストビュー -->
+    <header class="hero">
+        <h1>もう、一人で泣く夜は<br>終わりにしませんか？</h1>
+        <p>あなたの声の“波動”から真実を読み解く<br>鑑定実績3000人【恋蛇】運命の電話鑑定</p>
+        <div class="badges">
+            <span class="badge">鑑定実績3000人超</span>
+            <span class="badge">恋愛専門</span>
+            <span class="badge">顔出し不要</span>
+        </div>
+        <a href="#pricing" class="cta-button">鑑定プラン一覧・ご予約はこちら</a>
+        <p class="cta-subtext">（タップすると料金プランまで移動します）</p>
+    </header>
+
+    <main class="container">
+
+        <!-- 2. 共感・問題提起 -->
+        <section class="problem">
+            <h2>こんな想いを、今、<br>抱えていませんか？</h2>
+            <ul>
+                <li>彼の気持ちが分からなくて、胸が張り裂けそう…</li>
+                <li>この苦しい想い、今すぐ誰かに聞いてほしい！</li>
+                <li>文字にするのも辛い…声で直接、想いを伝えたい…</li>
+                <li>誰にも言えない複雑な恋。顔を見ては話せない…</li>
+                <li>メールの返信を待つ時間さえ、もう耐えられない…</li>
+            </ul>
+            <p style="text-align:center; margin-top: 30px; font-weight: 700;">
+                もし、一つでも当てはまるなら、<br>
+                その直感に従って、このまま読み進めてください。<br>
+                その悩み、たった1本の電話で出口が見つかるかもしれません。
+            </p>
+        </section>
+
+        <!-- 3. 解決策の提示（ベネフィット） -->
+        <section class="solution">
+            <h2>なぜ、恋蛇の「電話鑑定」は<br>あなたの恋を“好転”へと導けるのか？</h2>
+            <h3>１．あなたの声の“波動”から、彼の本心と二人の未来を深く読み解きます</h3>
+            <p>あなたの言葉、息遣い、感情の揺れ動き…声が持つ独自のエネルギーから、文字だけでは分からない魂の情報を正確に読み取り、鑑定の精度を極限まで高めます。</p>
+            <h3>２．顔が見えないからこそ、話せる“本音”があります</h3>
+            <p>どんなに複雑な恋の悩みも、誰にも言えない心の痛みも、顔を見られない安心感の中で、すべて吐き出すことができます。あなたの秘密は、私が絶対に守ります。</p>
+            <h3>３．思い立った“その瞬間”が、あなたの運命の変わり目です</h3>
+            <p>不安が頂点に達したその時が、最も未来が動きやすいタイミング。日本全国どこからでも、あなたの部屋が特別な鑑定室になります。もう待つ必要はありません。</p>
+        </section>
+
+        <!-- 4. 料金案内 -->
+        <section class="pricing" id="pricing">
+            <h2>料金のご案内</h2>
+            <p style="text-align:center;">あなたの悩みの深さに合わせて、最適なプランをお選びいただけます。<br>どのコースを選べば良いか分からない場合は、最も人気の「じっくり鑑定40分」がおすすめです。</p>
+            
+            <div class="pricing-grid">
+                <div class="plan">
+                    <div class="plan-content">
+                        <div class="plan-name">お試し鑑定</div>
+                        <h3>20分コース</h3>
+                        <div class="plan-price">3,000<span style="font-size:0.5em; color:var(--text-color);">円</span></div>
+                        <p class="plan-description">「まずは恋蛇との相性を確かめたい」「YESかNOか、一つの質問に絞って急いで答えが欲しい」「彼の今の気持ちだけを、サクッと知りたい」といった方に最適です。短い時間ですが、あなたの声から核心に迫り、次の一歩への指針をお伝えします。</p>
+                    </div>
+                    <a href="https://subterra.base.shop/items/112961062" target="_blank" class="cta-button">このプランで購入</a>
+                </div>
+                <div class="plan popular">
+                    <div class="plan-content">
+                        <div class="plan-name">一番人気</div>
+                        <h3>40分コース</h3>
+                        <div class="plan-price">5,000<span style="font-size:0.5em; color:var(--text-color);">円</span></div>
+                        <p class="plan-description">ほとんどの方がこのプランを選ばれます。お二人の現状をじっくりお伺いし、彼の本心や今後の関係性の流れ、そして望む未来を手に入れるための具体的なアドバイスまで、バランス良くお伝えできる基本のプランです。迷ったらまずはこちらをお選びください。</p>
+                    </div>
+                    <a href="https://subterra.base.shop/items/112961385" target="_blank" class="cta-button">このプランで購入</a>
+                </div>
+                <div class="plan">
+                    <div class="plan-content">
+                        <div class="plan-name">徹底鑑定</div>
+                        <h3>60分コース</h3>
+                        <div class="plan-price">7,000<span style="font-size:0.5em; color:var(--text-color);">円</span></div>
+                        <p class="plan-description">「関係が複雑で、何から話せばいいか分からない」「複数の悩みや、過去からの経緯も踏まえてじっくり相談したい」「時間を気にせず、心ゆくまで話を聞いてほしい」という方のための特別プランです。運命を多角的に読み解き、根本的な解決を目指します。</p>
+                        <p class="plan-note">※40分コースよりも1,000円お得です！</p>
+                    </div>
+                    <a href="https://subterra.base.shop/items/112153524" target="_blank" class="cta-button">このプランで購入</a>
+                </div>
+            </div>
+            <p style="text-align:center; margin-top:30px; line-height: 2.2;">
+                <strong>【延長について】</strong>各コース終了後、ご希望の場合は<strong>10分ごとに1,500円</strong>で延長が可能です。<br>
+                <span style="font-size:0.9em;">無理な延長をお勧めすることは一切ございませんので、ご安心ください。</span><br>
+                <strong>【お支払い方法】</strong>クレジットカード / 銀行振込 / Amazon Pay / キャリア決済<br>
+                <span style="font-size:0.9em;">※表示価格は全て税込みです。</span>
+            </p>
+        </section>
+
+        <!-- 5. 購入後の流れ -->
+        <section class="flow">
+            <h2>鑑定までの流れ</h2>
+            <p style="text-align:center;">お申し込みから鑑定開始まで、簡単な3ステップで完了します。</p>
+
+            <div class="flow-grid">
+                <div class="flow-step">
+                    <div class="step-number">STEP 1</div>
+                    <h3>プラン選択・購入</h3>
+                    <p>ご希望の鑑定プランのボタンをタップし、表示されたページで決済を完了させてください。</p>
+                </div>
+                <div class="flow-step">
+                    <div class="step-number">STEP 2</div>
+                    <h3>公式LINEで連絡</h3>
+                    <p>決済完了後、下のボタンから恋蛇の公式LINEを友だち追加し、「購入者名」と「購入したプラン」をメッセージで送信してください。</p>
+                </div>
+                <div class="flow-step">
+                    <div class="step-number">STEP 3</div>
+                    <h3>日程調整・鑑定開始</h3>
+                    <p>メッセージ確認後、私から鑑定可能な日時をいくつかご提案します。日程を確定させ、当日お時間になりましたらお電話ください。</p>
+                </div>
+            </div>
+            <div style="text-align:center; margin-top:40px;">
+                <a href="https://lin.ee/FNXGWXx" target="_blank" class="line-button">恋蛇 公式LINEはこちら</a>
+            </div>
+        </section>
+
+        <!-- 6. クロージング -->
+        <section class="closing">
+            <h2 style="font-size:1.8em;">あなたがこのページに辿り着いたのは、<br>偶然ではありません。</h2>
+            <p style="text-align:center;">
+                それは、**「もう、変わりたい」**という、あなたの魂からのサインです。<br><br>
+                …1時間後、あなたはまだ同じ悩みで心を痛めていますか？<br>
+                …それとも、スッキリとした気持ちで、彼への次の一手にワクワクしていますか？<br><br>
+                未来は、あなたの“今”の決断にかかっています。<br>
+                蛇が古い皮を脱ぎ捨てて生まれ変わるように、あなたも古い悩みから抜け出す時です。<br><br>
+                <strong>本日分の鑑定枠には限りがございます。</strong><br>
+                迷っている、その一瞬が、あなたの恋の未来を変えるチャンスを逃しているのかもしれません。
+            </p>
+            <div style="text-align: center; margin-top: 40px;">
+                <a href="#pricing" class="cta-button">もう一度プランを確認する</a>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- フッター -->
+    <footer>
+        <a href="#">特定商取引法に基づく表記</a>
+        <a href="#">プライバシーポリシー</a>
+        <p style="margin-top:20px;">Copyright &copy; 2025 恋蛇 All Rights Reserved.</p>
+    </footer>
+
+</body>
+</html>
